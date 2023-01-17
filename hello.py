@@ -2,11 +2,15 @@
 
 from PIL import Image, ImageChops, ImageDraw
 
-def main():
+def main(target_width=108):
     img = Image.open("inputs/hello.png")
-    img = img.resize((d * 2 for d in img.size))
-    if img.width > 108:
-        img = img.crop((0, 0, 108, img.height))
+    #img = img.resize((d * 2 for d in img.size))
+    if img.width > target_width:
+        img = img.crop((0, 0, target_width, img.height))
+    elif img.width < target_width:
+        tmp = img
+        img = Image.new(tmp.mode, (target_width, tmp.height), 1)
+        img.paste(tmp, (0, 0))
     origsize = img.size
     scale = 16
     img = img.resize((d * scale for d in img.size))
